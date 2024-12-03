@@ -13,13 +13,11 @@ You can run the containers with docker compose:
 
 (or ```docker-compose up``` of you are using and older version of docker compose)
 
-The application expects a .env file with database credentials, an example file could be:
-```
-HOST = postgres_db
-SQL_NAME = tasks_db
-SQL_USER = ray
-SQL_PASSWORD = password
-HOST = postgres_db
-PORT = 5432
-```
-However, these can be freely chosen.
+This repository provides a default .env file with PostgreSQL database credentials. These are used when creating the database container, so these can be changed.
+
+Tests are run each time the backend container starts.
+
+## Quick overview
+
+The application consists of a Django backend and a PostgreSQL database. Both of these are containerized using Docker compose.
+
