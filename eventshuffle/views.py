@@ -4,7 +4,15 @@ from eventshuffle.models import Event
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
+from datetime import datetime
 
+
+def is_valid_date(date_str):
+    try:
+        datetime.strptime(date_str, '%Y-%m-%d')
+        return True
+    except ValueError:
+        return False
 
 @api_view(['GET'])
 def event_list(request):
@@ -16,6 +24,9 @@ def create_event(request):
     try:
         event_name = request.data.get('name')
         event_dates = request.data.get('dates', [])
+
+        if not all(isinstance(date, str) and is_valid_date(date) for date in event_dates):
+            return JsonResponse({'error': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
 
         if not event_name or not isinstance(event_dates, list):
             return JsonResponse({'error': 'Invalid input data'}, status=status.HTTP_400_BAD_REQUEST)
@@ -85,7 +96,7 @@ def add_vote(request, id):
                 date.people.append(person_name)
                 date.save()
 
-        response = generate_event_json(event, event_dates)
+        response = generate_event_json(event, EventDate.objects.filter(event=event))
 
         return response
 

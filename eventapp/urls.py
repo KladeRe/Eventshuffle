@@ -20,7 +20,7 @@ from .views import custom404
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("api/v1/event/", include("eventshuffle.urls")),
+    path("api/v1/event", include("eventshuffle.urls")),
 ]
 
 handler404 = custom404
